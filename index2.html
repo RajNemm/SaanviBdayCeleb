@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Saanvi Turns 5! 🎈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --gold: #F6C94D;
+    --gold-deep: #D9A02C;
+    --pink: #FF7DA8;
+    --plum: #3A1F47;
+    --cream-glass: rgba(255, 252, 246, 0.16);
+    --cream-glass-strong: rgba(255, 252, 246, 0.26);
+    --line: rgba(255, 255, 255, 0.45);
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family:'Quicksand', sans-serif;
+    color:#fff;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ---------- Background artwork (kept fully visible) ---------- */
+  .bg-wrap{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    width:100%;
+    height:100%;
+  }
+  .bg-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+  }
+  /* Soft vignette ONLY where it helps text legibility — fades to fully transparent
+     so the artwork is never flattened under a solid wash */
+  .vignette{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(30,12,38,0.45) 0%, rgba(30,12,38,0) 60%),
+      radial-gradient(ellipse 130% 70% at 50% 100%, rgba(20,8,30,0.55) 0%, rgba(20,8,30,0) 65%);
+  }
+
+  /* ---------- Ambient decoration layer (non-blocking) ---------- */
+  .fx-layer{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    overflow:hidden;
+  }
+
+  .confetti{
+    position:absolute;
+    top:-10px;
+    width:8px;
+    height:14px;
+    opacity:0.85;
+    border-radius:2px;
+    animation: fall linear infinite;
+  }
+  @keyframes fall{
+    0%{ transform: translateY(0) rotate(0deg); opacity:0.9; }
+    100%{ transform: translateY(110vh) rotate(540deg); opacity:0.4; }
+  }
+
+  .balloon{
+    position:absolute;
+    bottom:-140px;
+    width:46px;
+    height:58px;
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    animation: rise linear infinite;
+    box-shadow: inset -8px -8px 14px rgba(0,0,0,0.12), inset 6px 6px 10px rgba(255,255,255,0.35);
+  }
+  .balloon::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:100%;
+    width:1px;
+    height:60px;
+    background: rgba(255,255,255,0.4);
+    transform: translateX(-50%);
+  }
+  .balloon::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    bottom:-8px;
+    width:0; height:0;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:8px solid inherit;
+    transform: translateX(-50%);
+  }
+  @keyframes rise{
+    0%{ transform: translateY(0) translateX(0) rotate(-4deg); }
+    50%{ transform: translateY(-58vh) translateX(18px) rotate(4deg); }
+    100%{ transform: translateY(-118vh) translateX(-10px) rotate(-4deg); }
+  }
+
+  .sparkle{
+    position:absolute;
+    font-size:14px;
+    animation: twinkle ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.7));
+  }
+  @keyframes twinkle{
+    0%, 100%{ opacity:0.15; transform: scale(0.7) rotate(0deg); }
+    50%{ opacity:1; transform: scale(1.15) rotate(15deg); }
+  }
+
+  /* ---------- Layout ---------- */
+  .page{
+    position:relative;
+    z-index:2;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 38px 18px 50px;
+  }
+
+  .eyebrow{
+    font-family:'Fredoka', sans-serif;
+    font-size:13px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color: var(--gold);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+    margin: 0 0 6px;
+    opacity:0;
+    animation: dropIn 0.7s 0.1s ease-out forwards;
+  }
+
+  /* ---------- Hero name ---------- */
+  .name-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    margin: 4px 0 2px;
+  }
+  .name{
+    font-family:'Fredoka', sans-serif;
+    font-weight:700;
+    font-size: clamp(48px, 15vw, 86px);
+    margin:0;
+    display:flex;
+    line-height:1;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5));
+  }
+  .name .letter{
+    display:inline-block;
+    background: linear-gradient(180deg, #fff 0%, var(--gold) 55%, var(--gold-deep) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    opacity:0;
+    transform: translateY(40px) scale(0.5) rotate(-12deg);
+    animation: popLetter 0.65s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes popLetter{
+    to{ opacity:1; transform: translateY(0) scale(1) rotate(0deg); }
+  }
+  .name .letter.balloon-dot{ position:relative; }
+  .name .letter.balloon-dot .dot{
+    position:absolute;
+    top:-0.34em;
+    left:50%;
+    width:0.34em;
+    height:0.42em;
+    background: linear-gradient(160deg, #FF9DC3, var(--pink));
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    transform: translateX(-50%);
+    animation: bob 2.6s ease-in-out infinite;
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15), inset 2px 2px 3px rgba(255,255,255,0.5);
+  }
+  @keyframes bob{
+    0%,100%{ transform: translateX(-50%) translateY(0); }
+    50%{ transform: translateX(-50%) translateY(-5px); }
+  }
+
+  .turning{
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    font-size: clamp(15px, 4vw, 19px);
+    letter-spacing:1px;
+    margin: 2px 0 14px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+    opacity:0;
+    animation: dropIn 0.6s 0.95s ease-out forwards;
+  }
+
+  .age-badge{
+    position:relative;
+    width: 110px;
+    height: 110px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #fff5d8, var(--gold) 55%, var(--gold-deep) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin: 4px 0 18px;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.18), 0 12px 30px rgba(0,0,0,0.45), 0 0 40px rgba(246,201,77,0.55);
+    opacity:0;
+    animation: popLetter 0.7s 1.15s cubic-bezier(.34,1.56,.64,1) forwards, glow 2.4s 2s ease-in-out infinite;
+    cursor:pointer;
+    border:none;
+    touch-action: manipulation;
+  }
+  @keyframes glow{
+    0%,100%{ box-shadow: 0 0 0 6px rgba(255,255,255,0.18), 0 12px 30px rgba(0,0,0,0.45), 0 0 40px rgba(246,201,77,0.4); }
+    50%{ box-shadow: 0 0 0 6px rgba(255,255,255,0.28), 0 12px 30px rgba(0,0,0,0.45), 0 0 58px rgba(246,201,77,0.85); }
+  }
+  .age-badge span{
+    font-family:'Fredoka', sans-serif;
+    font-weight:700;
+    font-size:52px;
+    color:var(--plum);
+  }
+  .age-badge .candle{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    animation: flicker 1.4s ease-in-out infinite;
+  }
+  @keyframes flicker{
+    0%,100%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
+    50%{ transform:translateX(-50%) scale(1.12) rotate(3deg); }
+  }
+  .tap-hint{
+    font-size:11px;
+    letter-spacing:1px;
+    color:rgba(255,255,255,0.75);
+    margin: -6px 0 18px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    opacity:0;
+    animation: dropIn 0.6s 1.7s ease-out forwards;
+  }
+
+  .tagline{
+    text-align:center;
+    max-width:320px;
+    font-weight:600;
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height:1.5;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    margin: 0 0 26px;
+    opacity:0;
+    animation: dropIn 0.7s 1.3s ease-out forwards;
+  }
+
+  @keyframes dropIn{
+    from{ opacity:0; transform: translateY(-10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* ---------- Details glass card ---------- */
+  .card{
+    width:100%;
+    max-width:380px;
+    background: var(--cream-glass);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border:1px solid var(--line);
+    border-radius:26px;
+    padding: 8px 6px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    opacity:0;
+    transform: translateY(24px);
+    animation: cardIn 0.8s 1.55s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes cardIn{
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 16px;
+    text-decoration:none;
+    color:#fff;
+    border-radius:18px;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  a.row:active{ transform: scale(0.97); background: rgba(255,255,255,0.12); }
+  .row + .row{ border-top:1px solid rgba(255,255,255,0.18); }
+
+  .row .icon{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background: var(--cream-glass-strong);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+  }
+  .row .text{ flex:1; min-width:0; }
+  .row .label{
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin:0 0 2px;
+  }
+  .row .value{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:15.5px;
+    line-height:1.35;
+    margin:0;
+  }
+  .row .hint{
+    font-size:11.5px;
+    color: rgba(255,255,255,0.78);
+    margin:3px 0 0;
+  }
+  .row .chevron{
+    flex:0 0 auto;
+    font-size:18px;
+    opacity:0.7;
+    align-self:center;
+  }
+  .host-name{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:23px;
+    color: var(--gold);
+  }
+
+  .pulse-tap{
+    animation: tapPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes tapPulse{
+    0%,100%{ background: transparent; }
+    50%{ background: rgba(255,255,255,0.07); }
+  }
+
+  .footer-note{
+    text-align:center;
+    max-width:320px;
+    margin-top:26px;
+    font-size:13.5px;
+    line-height:1.6;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    opacity:0;
+    animation: dropIn 0.7s 2s ease-out forwards;
+  }
+
+  /* burst confetti spawned on tap */
+  .burst-piece{
+    position:fixed;
+    width:8px; height:8px;
+    border-radius:2px;
+    pointer-events:none;
+    z-index:5;
+    animation: burst 0.9s ease-out forwards;
+  }
+  @keyframes burst{
+    to{ transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity:0; }
+  }
+
+  @media (max-width:360px){
+    .age-badge{ width:96px; height:96px; }
+    .age-badge span{ font-size:44px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-wrap">
+    <img id="bgImage" src="https://raw.githubusercontent.com/RajNemm/SaanviBdayCeleb/65f5154a564f5f45ac4bc57768cde3ce2d776106/Gemini_Generated_Image_lgo1r9lgo1r9lgo1.png" alt="Saanvi's 5th birthday party artwork">
+  </div>
+  <div class="vignette"></div>
+  <div class="fx-layer" id="fxLayer"></div>
+
+  <div class="page">
+
+    <p class="eyebrow">✨ You're Invited ✨</p>
+
+    <div class="name-wrap">
+      <h1 class="name" id="nameHeading" aria-label="Saanvi"></h1>
+    </div>
+
+    <p class="turning">is turning</p>
+
+    <button class="age-badge" id="ageBadge" aria-label="Tap to celebrate">
+      <span class="candle">🕯️</span>
+      <span>5</span>
+    </button>
+    <p class="tap-hint">tap to celebrate 🎉</p>
+
+    <p class="tagline">Come dressed in your party best for an afternoon of cake, balloons &amp; giggles!</p>
+
+    <div class="card">
+      <div class="row">
+        <div class="icon">📅</div>
+        <div class="text">
+          <p class="label">Date</p>
+          <p class="value">Tuesday, 30th June</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="icon">⏰</div>
+        <div class="text">
+          <p class="label">Time</p>
+          <p class="value">1:30 PM onwards</p>
+        </div>
+      </div>
+
+      <a class="row pulse-tap" id="mapLink" href="#" target="_blank" rel="noopener">
+        <div class="icon">📍</div>
+        <div class="text">
+          <p class="label">Venue</p>
+          <p class="value">Haldiram's, Pacific Mall, Pitampura</p>
+          <p class="hint">Near Netaji Subhash Place Metro · Tap for directions</p>
+        </div>
+        <div class="chevron">↗</div>
+      </a>
+
+      <div class="row">
+        <div class="icon">💛</div>
+        <div class="text">
+          <p class="label">Hosted with love by</p>
+          <p class="value host-name">The Khattar Family</p>
+        </div>
+      </div>
+
+      <a class="row" id="phoneLink" href="#">
+        <div class="icon">📞</div>
+        <div class="text">
+          <p class="label">RSVP</p>
+          <p class="value">98996 80109</p>
+          <p class="hint">Tap to call</p>
+        </div>
+        <div class="chevron">↗</div>
+      </a>
+    </div>
+
+    <p class="footer-note">We can't wait to celebrate Saanvi's big day with you! 🎈🧁</p>
+
+  </div>
+
+<script>
+  // ---- Background image fallback chain (in case any one host/format is blocked) ----
+  const bgImg = document.getElementById('bgImage');
+  const bgSources = [
+    "https://raw.githubusercontent.com/RajNemm/SaanviBdayCeleb/65f5154a564f5f45ac4bc57768cde3ce2d776106/Gemini_Generated_Image_lgo1r9lgo1r9lgo1.png",
+    "https://github.com/RajNemm/SaanviBdayCeleb/blob/65f5154a564f5f45ac4bc57768cde3ce2d776106/Gemini_Generated_Image_lgo1r9lgo1r9lgo1.png?raw=true",
+    "https://media.githubusercontent.com/media/RajNemm/SaanviBdayCeleb/65f5154a564f5f45ac4bc57768cde3ce2d776106/Gemini_Generated_Image_lgo1r9lgo1r9lgo1.png"
+  ];
+  let bgIndex = 0;
+  bgImg.addEventListener('error', () => {
+    bgIndex++;
+    if (bgIndex < bgSources.length) {
+      bgImg.src = bgSources[bgIndex];
+    } else {
+      document.querySelector('.bg-wrap').style.background =
+        'linear-gradient(160deg, #3A1F47, #6A2E5C, #C9961E)';
+      bgImg.style.display = 'none';
+    }
+  });
+
+  // ---- Build animated name letters ----
+  const NAME = "Saanvi";
+  const heading = document.getElementById('nameHeading');
+  NAME.split('').forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'letter';
+    span.textContent = ch;
+    span.style.animationDelay = (0.3 + i * 0.09) + 's';
+    if (ch.toLowerCase() === 'i') {
+      span.classList.add('balloon-dot');
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.style.animationDelay = (0.9 + i * 0.09) + 's';
+      span.appendChild(dot);
+    }
+    heading.appendChild(span);
+  });
+
+  // ---- Maps + phone links (built safely via the browser's own encoder) ----
+  const address = "Haldiram's - Pacific Mall Pitampura, GF, Pacific Mall, Metro Station, No EK/GF/15, FCC/01, near Netaji Subhash Place, Netaji Subhash Place, Pitampura, New Delhi, Delhi 110034";
+  document.getElementById('mapLink').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address);
+  document.getElementById('phoneLink').href = 'tel:+919899680109';
+
+  // ---- Ambient ombre confetti + balloons + sparkles ----
+  const fx = document.getElementById('fxLayer');
+  const colors = ['#F6C94D', '#FF7DA8', '#FFFFFF', '#FFB347', '#C58CF2'];
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  for (let i = 0; i < 16; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = rand(0, 100) + 'vw';
+    c.style.background = colors[i % colors.length];
+    c.style.animationDuration = rand(7, 13) + 's';
+    c.style.animationDelay = rand(0, 10) + 's';
+    fx.appendChild(c);
+  }
+
+  const balloonColors = ['#FF7DA8', '#F6C94D', '#C58CF2', '#7FD8C8'];
+  for (let i = 0; i < 6; i++) {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.left = rand(2, 88) + 'vw';
+    b.style.background = balloonColors[i % balloonColors.length];
+    b.style.borderTopColor = balloonColors[i % balloonColors.length];
+    b.style.animationDuration = rand(14, 22) + 's';
+    b.style.animationDelay = rand(0, 16) + 's';
+    fx.appendChild(b);
+  }
+
+  const sparkleChars = ['✦', '✧', '⋆'];
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.textContent = sparkleChars[i % sparkleChars.length];
+    s.style.left = rand(4, 96) + 'vw';
+    s.style.top = rand(4, 96) + 'vh';
+    s.style.animationDuration = rand(2, 4.5) + 's';
+    s.style.animationDelay = rand(0, 3) + 's';
+    fx.appendChild(s);
+  }
+
+  // ---- Tap-to-celebrate burst on the age badge ----
+  function burst(x, y){
+    const count = 26;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'burst-piece';
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.background = colors[i % colors.length];
+      const angle = rand(0, Math.PI * 2);
+      const dist = rand(60, 160);
+      p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+      p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+      p.style.setProperty('--rot', rand(0, 540) + 'deg');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 950);
+    }
+  }
+
+  const badge = document.getElementById('ageBadge');
+  badge.addEventListener('click', (e) => {
+    const rect = badge.getBoundingClientRect();
+    burst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    badge.style.transform = 'scale(0.92)';
+    setTimeout(() => { badge.style.transform = ''; }, 180);
+  });
+
+  // little celebratory burst on first load too
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      burst(window.innerWidth / 2, window.innerHeight * 0.32);
+    }, 1900);
+  });
+</script>
+
+</body>
+</html>
