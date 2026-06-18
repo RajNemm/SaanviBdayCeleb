@@ -162,52 +162,54 @@
     animation: fadeSlide .8s ease 1.05s forwards;
   }
 
-  /* ---------- Age balloon ---------- */
+  /* ---------- Age "balloon" — no solid shape, so nothing in the photo gets covered ---------- */
   .age-balloon{
     position:relative;
-    width:128px;
-    height:158px;
-    margin:14px auto 6px;
-    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
-    background:radial-gradient(circle at 32% 28%, #fff7e0, var(--gold) 45%, var(--pink) 100%);
-    box-shadow:0 16px 32px rgba(0,0,0,.35), inset -10px -10px 22px rgba(255,255,255,.25);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    width:auto;
+    margin:10px auto 4px;
+    display:inline-block;
     animation: balloonFloat 4.5s ease-in-out infinite, popIn .8s cubic-bezier(.34,1.56,.64,1) 1.3s backwards;
   }
-  .age-balloon::after{
-    content:'';
-    position:absolute;
-    bottom:-12px; left:50%;
-    transform:translateX(-50%);
-    width:0; height:0;
-    border-left:8px solid transparent;
-    border-right:8px solid transparent;
-    border-top:13px solid var(--pink);
-  }
   .balloon-string{
-    position:absolute;
-    left:50%; top:100%;
-    width:2px; height:54px;
-    background:rgba(255,255,255,.6);
+    position:relative;
+    display:block;
+    width:1.5px;
+    height:38px;
+    margin:0 auto;
+    background:rgba(255,255,255,.55);
     transform-origin: top center;
     animation: stringSway 3s ease-in-out infinite;
   }
+  .balloon-string::after{
+    content:'';
+    position:absolute;
+    left:50%; top:0;
+    transform:translateX(-50%);
+    width:0; height:0;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:8px solid var(--pink);
+  }
   .age-number{
+    display:block;
     font-family:'Baloo 2', sans-serif;
-    font-size:62px;
+    font-size:clamp(86px, 26vw, 118px);
+    line-height:.9;
     font-weight:800;
-    color:var(--plum);
-    text-shadow:0 2px 0 rgba(255,255,255,.45);
+    background:linear-gradient(135deg, var(--gold), var(--pink) 65%, var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    -webkit-text-stroke:2.5px rgba(255,255,255,.7);
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,.4));
   }
   @keyframes balloonFloat{
     0%,100%{ transform:translateY(0) rotate(-2deg); }
-    50%{ transform:translateY(-14px) rotate(2deg); }
+    50%{ transform:translateY(-12px) rotate(2deg); }
   }
   @keyframes stringSway{
-    0%,100%{ transform:translateX(-50%) rotate(-4deg); }
-    50%{ transform:translateX(-50%) rotate(4deg); }
+    0%,100%{ transform:rotate(-4deg); }
+    50%{ transform:rotate(4deg); }
   }
 
   .tagline-sub{
